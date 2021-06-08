@@ -1,0 +1,174 @@
+<Button>:
+    text: ""
+    size: 60, 60
+
+TheScreenManager:
+    TheScreen:
+
+<TheScreen>:
+    PaintBoard:
+        id: the_canvas
+
+    BottomCanvasLayout:
+        id: buttonsLayout
+        slider: slider
+        redo: redo_btn
+        undo: undo_btn
+        save: save
+        load: load
+
+        Button:
+            background_normal: ''
+            background_down: ''
+            background_color: (169/255.0, 169/255.0, 169/255.0, 1)
+            size: buttonsLayout.width,64
+            disabled: True
+       
+        Button:
+            background_normal: ''
+            background_down: ''
+            background_color: (51/255, 253/255, 1, 1)
+            pos: 0, 0
+            on_press: the_canvas.change_color(51, 253, 255)
+
+        Button:
+            background_color: (252/255 , 252/255, 21/255, 1)
+            background_normal: ''
+            background_down: ''
+            pos: 60, 0
+            on_press: the_canvas.change_color(252, 252, 21)
+
+        Button:
+            background_color: (0 , 1, 0, 1)
+            background_normal: ''
+            background_down: ''
+            pos: 120, 0
+            on_press: the_canvas.change_color(0, 255, 0)
+
+        Button:
+            background_color: (1 , 0, 0, 1)
+            background_normal: ''
+            background_down: ''
+            pos: 180, 0
+            on_press: the_canvas.change_color(255, 0, 0)
+
+        Button:
+            background_color: (1 , 1, 1, 1)
+            background_normal: ''
+            background_down: ''
+            pos: 240, 0
+            on_press: the_canvas.change_color(255, 255, 255)
+
+        Button:
+            background_color: (0 , 0, 0, 1)
+            background_normal: ''
+            background_down: ''
+            pos: 300, 0
+            on_press: the_canvas.change_color(0, 0, 0)
+
+        Button:
+            id: save
+            text: "save"
+            size: 64, 32
+            pos: 364, 32
+            on_release: buttonsLayout.showSave()
+
+        Button:
+            id: load
+            text: "Load"
+            size: 64, 32
+            pos: 364, 0
+            on_release: buttonsLayout.showLoad()
+
+        Button:
+            text: "reset"
+            size: 64, 32
+            pos: 428, 0
+            on_press: the_canvas.clear()
+
+        Button:
+            id: undo_btn
+            text: "undo"
+            size: 64, 32
+            pos: 428, 32
+            disabled: True
+            on_press: the_canvas.undo_press()
+
+        Button:
+            id: redo_btn
+            text: "redo"
+            size: 64, 32
+            pos: 492, 16
+            disabled: True
+            on_press: the_canvas.redo_press()
+
+        Slider:
+            id: slider
+            min: 5
+            max: 20
+            step: 1
+            orientation: 'horizontal'
+            background_color: (0,0,0,1)
+            pos: 600, -15
+
+        Label:
+            text: str(slider.value)
+            bold: True
+            color: 0,0,0,1
+            pos: 655, -16
+
+<LoadDialog>:
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        FileChooserIconView:
+            id: filechooser
+            filters: ['*.png']
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Load"
+                on_release: root.load(filechooser.selection)
+
+
+<SaveDialog>:
+    id: save_dialog
+    filename: filename
+
+    BoxLayout:
+        size: root.size
+        pos: root.pos
+        orientation: "vertical"
+
+        FileChooserIconView:
+            id: filechooser
+            filters: ['*.png']
+            dirselect: True
+            on_selection: filename.text = (self.selection and self.selection[0]) + '\\'
+            
+        TextInput:
+            id: filename
+            size_hint_y: None
+            height: 30
+            multiline: False
+
+        BoxLayout:
+            size_hint_y: None
+            height: 30
+            Button:
+                text: "Cancel"
+                on_release: root.cancel()
+
+            Button:
+                text: "Save"
+                on_release: root.save(filename.text)
+
+
+
